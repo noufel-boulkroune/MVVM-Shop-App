@@ -7,6 +7,7 @@ import '../../utils/constants.dart';
 
 class Api {
   static Api apiInstance = Api();
+  bool isLoading = true;
 
   //get Products
 
@@ -15,6 +16,7 @@ class Api {
       final response = await http.get(Uri.parse(apiLink));
       if (response.statusCode == 200) {
         final responseBody = await jsonDecode(response.body);
+        isLoading = false;
         return (responseBody);
       }
     } catch (error) {

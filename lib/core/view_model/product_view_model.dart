@@ -18,4 +18,17 @@ class ProductViewModel with ChangeNotifier {
         .toList();
     notifyListeners();
   }
+
+  void searchFilter(String data) {
+    if (_productsList.isEmpty) {
+      return;
+    }
+    data == null || data == ""
+        ? fetchAndSetData()
+        : _productsList = _productsList
+            .where((productElement) =>
+                productElement.title!.toLowerCase().contains(data))
+            .toList();
+    notifyListeners();
+  }
 }
