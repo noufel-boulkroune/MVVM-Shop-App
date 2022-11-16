@@ -57,10 +57,10 @@ class _testState extends State<test> {
                           .searchFilter(value);
                     },
 
-                    // onSubmitted: (value) {
-                    //   Provider.of<ProductViewModel>(context, listen: false)
-                    //       .fetchAndSetData();
-                    // },
+                    onSubmitted: (value) {
+                      Provider.of<ProductViewModel>(context, listen: false)
+                          .fetchAndSetData();
+                    },
                   ),
                 ),
                 Expanded(

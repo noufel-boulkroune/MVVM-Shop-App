@@ -21,7 +21,7 @@ class ProductViewModel with ChangeNotifier {
 
   void searchFilter(String data) {
     if (_productsList.isEmpty) {
-      return;
+      fetchAndSetData();
     }
     data == null || data == ""
         ? fetchAndSetData()
