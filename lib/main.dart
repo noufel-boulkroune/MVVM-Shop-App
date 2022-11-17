@@ -19,7 +19,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'MVVP Shop app',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.orange,
+          primaryColor: Color.fromARGB(255, 236, 170, 95),
+          accentColor: Colors.amber,
         ),
         home: test(),
       ),

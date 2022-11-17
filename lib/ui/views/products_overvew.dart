@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mvvp_shop_app/core/models/products.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +18,7 @@ class _testState extends State<test> {
   @override
   void initState() {
     context.read<ProductViewModel>().fetchAndSetData();
+
     super.initState();
   }
 
@@ -25,24 +28,35 @@ class _testState extends State<test> {
 
     List<Products> productsList =
         Provider.of<ProductViewModel>(context).productsList;
-
+    List<String> categories = Provider.of<ProductViewModel>(context).categories;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("test"),
+        title: const Text(
+          "test",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.read<ProductViewModel>().fetchAndSetData();
+              },
+              icon: Icon(Icons.add))
+        ],
       ),
+      drawer: Drawer(),
       body: Api.apiInstance.isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: TextField(
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                children: [
+                  TextField(
                     maxLines: 1,
                     decoration: InputDecoration(
                       hintText: "Search",
-                      fillColor: Colors.grey.withOpacity(0.5),
+                      fillColor: Colors.orange.withOpacity(0.5),
                       filled: true,
                       border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
@@ -62,10 +76,37 @@ class _testState extends State<test> {
                           .fetchAndSetData();
                     },
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    height: phoneSize.height * 0.06,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          child: Card(
+                              color: Theme.of(context).primaryColor,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 25),
+                                child: Center(
+                                  child: Text(
+                                    categories[index].toString(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              )),
+                          onTap: () {
+                            Provider.of<ProductViewModel>(context,
+                                    listen: false)
+                                .updateByCategory(categories[index]);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Expanded(
                     child: ListView.builder(
                       itemCount: productsList.length,
                       itemBuilder: (context, index) {
@@ -88,9 +129,9 @@ class _testState extends State<test> {
                         );
                       },
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
     );
   }
